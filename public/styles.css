@@ -1,3 +1,7 @@
+/* Prevent FOUC */
+html { visibility: hidden; }
+html.loaded { visibility: visible; }
+
 * {
   box-sizing: border-box;
   font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;

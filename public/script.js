@@ -1,3 +1,4 @@
+document.documentElement.classList.add('loaded');
 const logs = document.getElementById("logs");
 const authInfo = document.getElementById("authInfo");
 const dashboardInfo = document.getElementById("dashboardInfo");
