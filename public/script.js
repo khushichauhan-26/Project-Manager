@@ -51,11 +51,15 @@ function showLogin() {
 }
 
 function showDashboard() {
+  authScreen.hidden = true;
+  dashboardScreen.hidden = false;
   authScreen.classList.add("hidden");
   dashboardScreen.classList.remove("hidden");
 }
 
 function showAuth() {
+  dashboardScreen.hidden = true;
+  authScreen.hidden = false;
   dashboardScreen.classList.add("hidden");
   authScreen.classList.remove("hidden");
   showSignup();
