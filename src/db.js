@@ -39,7 +39,13 @@ async function initDb() {
   try {
     await activePool.query("SELECT 1");
   } catch (error) {
-    if (error && (error.code === "ECONNREFUSED" || error.name === "AggregateError")) {
+    if (
+      error &&
+      (error.code === "ECONNREFUSED" ||
+        error.code === "ENOTFOUND" ||
+        error.code === "ETIMEDOUT" ||
+        error.name === "AggregateError")
+    ) {
       console.warn(
         "PostgreSQL is not reachable. Falling back to in-memory DB (data resets on restart)."
       );

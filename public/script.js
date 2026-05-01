@@ -40,12 +40,28 @@ function setAuthInfo(user) {
 
 function fillProjects(projects) {
   projectSelect.innerHTML = "";
+  if (!projects.length) {
+    const option = document.createElement("option");
+    option.value = "";
+    option.textContent = "No projects available";
+    projectSelect.appendChild(option);
+    return;
+  }
+
   for (const p of projects) {
     const option = document.createElement("option");
     option.value = p.id;
     option.textContent = `${p.name} (tasks: ${p.task_count || 0})`;
     projectSelect.appendChild(option);
   }
+}
+
+function getSelectedProjectId() {
+  const projectId = Number(projectSelect.value);
+  if (!projectId) {
+    throw new Error("Please load and select a project first");
+  }
+  return projectId;
 }
 
 document.getElementById("signupBtn").onclick = async () => {
@@ -121,7 +137,7 @@ document.getElementById("loadProjectsBtn").onclick = async () => {
 
 document.getElementById("addMemberBtn").onclick = async () => {
   try {
-    const projectId = Number(projectSelect.value);
+    const projectId = getSelectedProjectId();
     const data = await api(`/api/projects/${projectId}/members`, {
       method: "POST",
       body: JSON.stringify({
@@ -137,7 +153,7 @@ document.getElementById("addMemberBtn").onclick = async () => {
 
 document.getElementById("createTaskBtn").onclick = async () => {
   try {
-    const projectId = Number(projectSelect.value);
+    const projectId = getSelectedProjectId();
     const assignRaw = document.getElementById("taskAssignTo").value.trim();
     const assignedTo = assignRaw ? Number(assignRaw) : null;
     const dueDate = document.getElementById("taskDueDate").value || null;
@@ -161,9 +177,17 @@ document.getElementById("createTaskBtn").onclick = async () => {
 
 document.getElementById("loadTasksBtn").onclick = async () => {
   try {
-    const projectId = Number(projectSelect.value);
+    const projectId = getSelectedProjectId();
     const tasks = await api(`/api/tasks?projectId=${projectId}`);
     taskList.innerHTML = "";
+    if (!tasks.length) {
+      const li = document.createElement("li");
+      li.textContent = "No tasks found for this project.";
+      taskList.appendChild(li);
+      log("Tasks loaded", tasks);
+      return;
+    }
+
     for (const task of tasks) {
       const li = document.createElement("li");
       li.innerHTML = `<strong>${task.title}</strong> | ${task.status} | priority ${task.priority} | assigned: ${
