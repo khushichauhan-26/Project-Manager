@@ -91,6 +91,7 @@ h2 {
 .row,
 .grid {
   display: flex;
+  align-items: center;
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 10px;
@@ -107,11 +108,18 @@ button {
 input,
 select {
   width: 100%;
-  flex: 1 1 180px;
+  flex: 1 1 220px;
+  min-width: 180px;
   padding: 8px 11px;
   color: #f3f4f6;
   border: 1px solid #334155;
   background: #12263a;
+}
+
+.row button,
+.grid button {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 input::placeholder {
@@ -154,7 +162,7 @@ button:hover {
 }
 
 .container {
-  max-width: 1120px;
+  width: min(100%, 1040px);
   margin: 0 auto;
   padding: 24px 18px 34px;
 }
@@ -198,7 +206,8 @@ pre {
 }
 
 #taskList li select {
-  flex: 0 0 160px;
+  flex: 0 0 170px;
+  min-width: 170px;
 }
 
 @media (max-width: 760px) {
