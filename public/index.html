@@ -7,33 +7,66 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Project Tracker</h1>
-      <p class="muted">Manage projects, assign tasks, and track progress.</p>
+    <div id="authScreen" class="auth-screen">
+      <div class="auth-shell">
+        <header class="auth-header">
+          <div class="brand">
+            <span class="brand-mark">P</span>
+            <h1>Project Tracker</h1>
+          </div>
+          <p>Manage projects, assign tasks, and track progress.</p>
+        </header>
 
-      <section class="card">
-        <h2>Auth</h2>
-        <div class="row">
-          <input id="name" placeholder="Name (signup only)" />
-          <input id="email" placeholder="Email" />
-          <input id="password" type="password" placeholder="Password" />
-          <select id="role">
-            <option value="MEMBER">Member</option>
-            <option value="ADMIN">Admin</option>
-          </select>
+        <section id="signupCard" class="card auth-card">
+          <h2>Create account</h2>
+          <p class="muted">Start by creating your workspace account.</p>
+          <div class="stack">
+            <input id="signupName" placeholder="Full name" />
+            <input id="signupEmail" placeholder="Email" />
+            <input id="signupPassword" type="password" placeholder="Password" />
+            <select id="signupRole">
+              <option value="MEMBER">Member</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+            <button id="signupBtn">Create account</button>
+          </div>
+          <p class="auth-switch">
+            Already have an account?
+            <button id="gotoLoginBtn" class="link-btn">Go to login</button>
+          </p>
+        </section>
+
+        <section id="loginCard" class="card auth-card hidden">
+          <h2>Welcome back</h2>
+          <p class="muted">Sign in to continue to your dashboard.</p>
+          <div class="stack">
+            <input id="loginEmail" placeholder="Email" />
+            <input id="loginPassword" type="password" placeholder="Password" />
+            <button id="loginBtn">Sign in</button>
+          </div>
+          <p class="auth-switch">
+            New here?
+            <button id="gotoSignupBtn" class="link-btn">Create an account</button>
+          </p>
+        </section>
+
+        <pre id="authInfo">Not logged in</pre>
+      </div>
+    </div>
+
+    <main id="dashboardScreen" class="container hidden">
+      <header class="dashboard-header card">
+        <div>
+          <h2>Project Dashboard</h2>
+          <p class="muted">Organize work and track delivery in one place.</p>
         </div>
-        <div class="row">
-          <button id="signupBtn">Signup</button>
-          <button id="loginBtn">Login</button>
-          <button id="logoutBtn">Logout</button>
-        </div>
-        <pre id="authInfo"></pre>
-      </section>
+        <button id="logoutBtn">Logout</button>
+      </header>
 
       <section class="card">
         <h2>Project Management</h2>
         <div class="row">
-          <input id="projectName" placeholder="Project Name" />
+          <input id="projectName" placeholder="Project name" />
           <input id="projectDescription" placeholder="Description" />
           <button id="createProjectBtn">Create Project</button>
         </div>
@@ -72,16 +105,15 @@
       </section>
 
       <section class="card">
-        <h2>Dashboard</h2>
-        <button id="loadDashboardBtn">Load Dashboard</button>
+        <h2>Activity</h2>
+        <pre id="logs">Activity logs will appear here...</pre>
+      </section>
+      <section class="card">
+        <h2>Analytics</h2>
+        <button id="loadDashboardBtn">Load Dashboard Data</button>
         <pre id="dashboardInfo"></pre>
       </section>
-
-      <section class="card">
-        <h2>Activity</h2>
-        <pre id="logs"></pre>
-      </section>
-    </div>
+    </main>
     <script src="/script.js"></script>
   </body>
 </html>

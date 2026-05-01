@@ -4,6 +4,11 @@ const dashboardInfo = document.getElementById("dashboardInfo");
 const taskList = document.getElementById("taskList");
 const projectSelect = document.getElementById("projectSelect");
 
+const authScreen = document.getElementById("authScreen");
+const dashboardScreen = document.getElementById("dashboardScreen");
+const signupCard = document.getElementById("signupCard");
+const loginCard = document.getElementById("loginCard");
+
 const state = {
   token: localStorage.getItem("token") || "",
   projects: [],
@@ -32,6 +37,27 @@ async function api(path, options = {}) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok) throw new Error(data.message || "Request failed");
   return data;
+}
+
+function showSignup() {
+  signupCard.classList.remove("hidden");
+  loginCard.classList.add("hidden");
+}
+
+function showLogin() {
+  loginCard.classList.remove("hidden");
+  signupCard.classList.add("hidden");
+}
+
+function showDashboard() {
+  authScreen.classList.add("hidden");
+  dashboardScreen.classList.remove("hidden");
+}
+
+function showAuth() {
+  dashboardScreen.classList.add("hidden");
+  authScreen.classList.remove("hidden");
+  showSignup();
 }
 
 function setAuthInfo(user) {
@@ -64,22 +90,32 @@ function getSelectedProjectId() {
   return projectId;
 }
 
+async function handleAuthSuccess(data, message) {
+  state.token = data.token;
+  localStorage.setItem("token", data.token);
+  setAuthInfo(data.user);
+  showDashboard();
+  log(message, data.user);
+  await loadProjects();
+}
+
+document.getElementById("gotoLoginBtn").onclick = showLogin;
+document.getElementById("gotoSignupBtn").onclick = showSignup;
+
 document.getElementById("signupBtn").onclick = async () => {
   try {
     const data = await api("/api/auth/signup", {
       method: "POST",
       body: JSON.stringify({
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
-        role: document.getElementById("role").value,
+        name: document.getElementById("signupName").value,
+        email: document.getElementById("signupEmail").value,
+        password: document.getElementById("signupPassword").value,
+        role: document.getElementById("signupRole").value,
       }),
     });
-    state.token = data.token;
-    localStorage.setItem("token", data.token);
-    setAuthInfo(data.user);
-    log("Signup success", data.user);
+    await handleAuthSuccess(data, "Signup success");
   } catch (error) {
+    setAuthInfo(null);
     log(`Signup failed: ${error.message}`);
   }
 };
@@ -89,15 +125,13 @@ document.getElementById("loginBtn").onclick = async () => {
     const data = await api("/api/auth/login", {
       method: "POST",
       body: JSON.stringify({
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
+        email: document.getElementById("loginEmail").value,
+        password: document.getElementById("loginPassword").value,
       }),
     });
-    state.token = data.token;
-    localStorage.setItem("token", data.token);
-    setAuthInfo(data.user);
-    log("Login success", data.user);
+    await handleAuthSuccess(data, "Login success");
   } catch (error) {
+    setAuthInfo(null);
     log(`Login failed: ${error.message}`);
   }
 };
@@ -106,6 +140,7 @@ document.getElementById("logoutBtn").onclick = () => {
   state.token = "";
   localStorage.removeItem("token");
   setAuthInfo(null);
+  showAuth();
   log("Logged out");
 };
 
@@ -119,16 +154,22 @@ document.getElementById("createProjectBtn").onclick = async () => {
       }),
     });
     log("Project created", data);
+    await loadProjects();
   } catch (error) {
     log(`Create project failed: ${error.message}`);
   }
 };
 
+async function loadProjects() {
+  const data = await api("/api/projects");
+  state.projects = data;
+  fillProjects(data);
+  return data;
+}
+
 document.getElementById("loadProjectsBtn").onclick = async () => {
   try {
-    const data = await api("/api/projects");
-    state.projects = data;
-    fillProjects(data);
+    const data = await loadProjects();
     log("Projects loaded", data);
   } catch (error) {
     log(`Load projects failed: ${error.message}`);
@@ -234,6 +275,8 @@ document.getElementById("loadDashboardBtn").onclick = async () => {
 };
 
 async function bootstrap() {
+  showAuth();
+
   if (!state.token) {
     setAuthInfo(null);
     return;
@@ -242,10 +285,14 @@ async function bootstrap() {
   try {
     const me = await api("/api/me");
     setAuthInfo(me);
+    showDashboard();
+    await loadProjects();
+    log("Session restored", me);
   } catch (_error) {
     state.token = "";
     localStorage.removeItem("token");
     setAuthInfo(null);
+    showAuth();
   }
 }
 
