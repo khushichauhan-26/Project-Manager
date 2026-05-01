@@ -1,0 +1,23 @@
+{
+  "name": "project-tracker-app",
+  "version": "1.0.0",
+  "description": "Project and task tracker with RBAC",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0",
+    "pg-mem": "^3.0.14",
+    "zod": "^3.23.8"
+  }
+}

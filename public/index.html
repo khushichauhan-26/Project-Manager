@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Tracker</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Project Tracker</h1>
+      <p class="muted">Manage projects, assign tasks, and track progress.</p>
+
+      <section class="card">
+        <h2>Auth</h2>
+        <div class="row">
+          <input id="name" placeholder="Name (signup only)" />
+          <input id="email" placeholder="Email" />
+          <input id="password" type="password" placeholder="Password" />
+          <select id="role">
+            <option value="MEMBER">Member</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+        <div class="row">
+          <button id="signupBtn">Signup</button>
+          <button id="loginBtn">Login</button>
+          <button id="logoutBtn">Logout</button>
+        </div>
+        <pre id="authInfo"></pre>
+      </section>
+
+      <section class="card">
+        <h2>Project Management</h2>
+        <div class="row">
+          <input id="projectName" placeholder="Project Name" />
+          <input id="projectDescription" placeholder="Description" />
+          <button id="createProjectBtn">Create Project</button>
+        </div>
+        <div class="row">
+          <button id="loadProjectsBtn">Load Projects</button>
+          <select id="projectSelect"></select>
+        </div>
+        <div class="row">
+          <input id="memberEmail" placeholder="Member email" />
+          <select id="memberRole">
+            <option value="MEMBER">Member</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+          <button id="addMemberBtn">Add Member</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Task Management</h2>
+        <div class="grid">
+          <input id="taskTitle" placeholder="Task title" />
+          <input id="taskDetails" placeholder="Details" />
+          <select id="taskPriority">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+          </select>
+          <input id="taskDueDate" type="date" />
+          <input id="taskAssignTo" placeholder="Assign user id (optional)" />
+          <button id="createTaskBtn">Create Task</button>
+        </div>
+        <div class="row">
+          <button id="loadTasksBtn">Load Tasks</button>
+        </div>
+        <ul id="taskList"></ul>
+      </section>
+
+      <section class="card">
+        <h2>Dashboard</h2>
+        <button id="loadDashboardBtn">Load Dashboard</button>
+        <pre id="dashboardInfo"></pre>
+      </section>
+
+      <section class="card">
+        <h2>Activity</h2>
+        <pre id="logs"></pre>
+      </section>
+    </div>
+    <script src="/script.js"></script>
+  </body>
+</html>
